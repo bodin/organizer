@@ -1,0 +1,41 @@
+plugins {
+    id 'eclipse'
+    id 'application'
+    id "com.moowork.node" version "0.13"
+    id "com.moowork.gulp" version "0.13"
+}
+repositories {
+	mavenCentral()
+}
+
+wrapper.gradleVersion='3.0'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+mainClassName='net.webspite.App'
+
+sourceSets {
+	client {resources {	srcDir 'src/client/' ; include '*.*'}}
+}
+
+ext{
+	bootVersion = '1.4.0.RELEASE'
+}
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-actuator:$bootVersion"
+	compile "org.springframework.boot:spring-boot-devtools:$bootVersion"
+	//compile "org.springframework.boot:spring-boot-starter-security:$bootVersion"	
+	compile "org.springframework.boot:spring-boot-starter-web:$bootVersion"
+	
+	compile 'org.thymeleaf:thymeleaf:3.0.1.RELEASE'
+	compile 'org.thymeleaf:thymeleaf-spring4:3.0.1.RELEASE'
+	compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.0.1'
+	
+	compile 'org.asciidoctor:asciidoctorj:1.5.4.1'
+	
+	testCompile "org.springframework.boot:spring-boot-starter-test:$bootVersion"
+}
+
+processResources.dependsOn(gulp_setup)

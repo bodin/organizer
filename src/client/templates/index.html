@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <link rel="stylesheet" href="/css/bootstrap-3.3.6.min.css" />
+        <link rel='stylesheet' href='/css/index.min.css' />
+        <title th:text="${title}"></title>
+    </head>
+    <body>
+        <h2>This is a message from the Thymeleaf template directly</h2>
+        <h2 th:text="${message}"></h2>
+        
+        <h2 id="react-one"></h2>        
+        <script type="text/javascript" src="/js/app-one.js"></script>
+        
+        <h2 id="react-two"></h2>
+        <script type="text/javascript" src="/js/app-two.js"></script>
+    </body>
+</html>

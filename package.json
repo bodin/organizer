@@ -1,0 +1,29 @@
+{
+  "name": "gradle-gulp-react",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "./gradlew clean run"
+  },
+  "dependencies": {},
+  "devDependencies": {    
+    "gulp": "^3.8.11",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^2.2.0",
+    "gulp-util": "^3.0.4",    
+    "gulp-livereload":"^3.8.1",
+    "gulp-clean-css":"2.0.12 ",
+    "event-stream":"^3.3.4",
+    "glob":"^7.0.6",
+    "mkdirp":"^0.5.1",
+    
+    "browserify": "^13.0.0",
+    "watchify": "^3.1.2",
+    "reactify": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0",
+        
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "jquery":"^3.1.0"
+  }
+}
