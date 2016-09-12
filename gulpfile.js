@@ -5,9 +5,9 @@ var source = require('vinyl-source-stream');
 var cleanCSS = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
-var reactify = require('reactify');
 var browserify = require('browserify');
 var watchify = require('watchify');
+var babelify = require('babelify');
 var livereload = require('gulp-livereload');
 var es = require('event-stream');
 var glob = require('glob');
@@ -53,6 +53,11 @@ gulp.task('html', function() {
 	.pipe(livereload());
 });
 
+gulp.task('vendor', function() {
+	return gulp.src(sourcePublic + '/vendor/**/**')            
+	.pipe(gulp.dest(buildPublic + '/vendor'));
+});
+
 gulp.task('classes', function() {
 	livereload({quiet:true});
 });
@@ -73,7 +78,7 @@ gulp.task('watch', function() {
 	gulp.watch('./bin/**/*.class', ['classes-bin'])	//helper for eclipse
 });
 
-gulp.task('setup', ['js', 'html', 'sass', 'css']);
+gulp.task('setup', ['js', 'html', 'sass', 'css', 'vendor']);
 
 function bundleJs(watch) {
 	return bundleOne(watch);
@@ -95,9 +100,10 @@ function bundleIntoOne(files, destination, watch) {
 	var props = watchify.args;
 	props.debug = true;
 	props.entries = files;
-
-	var bundler = watch ? watchify(browserify(props)) : browserify(props);
-	bundler.transform(reactify)
+	var bundler = watch ? watchify(browserify(props)) : browserify(props);	
+	
+	bundler.transform(babelify, {presets: ["es2015", "react"]})
+	
 	function rebundle() {
 		var startTime = new Date().getTime();		
 		return bundler
