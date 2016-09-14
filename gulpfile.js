@@ -2,9 +2,11 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var cleanCSS = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
@@ -12,6 +14,8 @@ var livereload = require('gulp-livereload');
 var es = require('event-stream');
 var glob = require('glob');
 var mkdirp = require('mkdirp');
+var _ = require('lodash');
+var nodeResolve = require('resolve');
 
 //system libs
 var fs = require('fs');
@@ -28,7 +32,9 @@ if (!fs.existsSync(buildPublic)){
 	mkdirp(buildPublic);
 }
 
-gulp.task('js', function() {
+var production = (process.env.NODE_ENV === 'production');
+
+gulp.task('js-app', function() {
 	return bundleJs(false);
 });
 
@@ -74,11 +80,10 @@ gulp.task('watch', function() {
 	gulp.watch(sourcePublic + '/sass/*.scss', ['sass']);
 	gulp.watch(sourcePublic + '/css/*.css', ['css']);  
 	bundleJs(true)
-	//gulp.watch('./build/classes/main/**/*.class', ['classes'])	
 	gulp.watch('./bin/**/*.class', ['classes-bin'])	//helper for eclipse
 });
 
-gulp.task('setup', ['js', 'html', 'sass', 'css', 'vendor']);
+gulp.task('setup', ['js-app', 'html', 'sass', 'css', 'vendor']);
 
 function bundleJs(watch) {
 	return bundleOne(watch);
@@ -98,17 +103,22 @@ function bundleIntoOne(files, destination, watch) {
 	gutil.log('Bundling');
 
 	var props = watchify.args;
-	props.debug = true;
+	props.debug = !production;
 	props.entries = files;
+	
 	var bundler = watch ? watchify(browserify(props)) : browserify(props);	
 	
-	bundler.transform(babelify, {presets: ["es2015", "react"]})
+	bundler.transform(babelify, {presets: ["es2015", "react"]})	
+	
+	bundler.external('material-ui');
 	
 	function rebundle() {
 		var startTime = new Date().getTime();		
 		return bundler
 		.bundle()
 		.pipe(source(destination))
+		//.pipe(buffer())
+		//.pipe(uglify())
 		.pipe(gulp.dest(buildPublic + '/js'))			
 		.on('end', function (options) {
 			var time = (new Date().getTime() - startTime) / 1000;
@@ -125,3 +135,15 @@ function bundleIntoOne(files, destination, watch) {
 	gutil.log('Done bundling');
 	return rebundle();
 }
+
+function getNPMPackageIds() {
+	// read package.json and get dependencies' package ids
+	var packageManifest = {};
+	try {
+		packageManifest = require('./package.json');
+	} catch (e) {
+		// does not have a package.json manifest
+	}
+	return _.keys(packageManifest.dependencies) || [];
+}
+
