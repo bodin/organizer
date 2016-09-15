@@ -3,7 +3,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 const CardExampleExpandable = () => (
-  <Card>
+  <Card style={{width:400,display:"inline-block",margin:20,verticalAlign:"top"}}>  
     <CardHeader
       title="Without Avatar"
       subtitle="Subtitle"
