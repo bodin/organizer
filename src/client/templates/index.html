@@ -1,19 +1,20 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-	<link rel='stylesheet' href='/css/index.min.css' />
-	<title th:text="${title}"></title>
-	
-	<script type="text/javascript" src="/js/vendor.js"></script>
-		
+
+<title th:text="${title}"></title>
+
+<!-- Use minimum-scale=1 to enable GPU rasterization -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+<link rel='stylesheet' href='/css/index.min.css' />
+
 </head>
 <body>
-	<h2>This is a message from the Thymeleaf template directly</h2>
-	<h2 th:text="${message}"></h2>
-
-
-	<div style="overflow:auto" id="react-one"></div>
+	<div id="react-one"></div>
 	<script type="text/javascript" src="/js/app-one.js"></script>
-	
 </body>
 </html>
