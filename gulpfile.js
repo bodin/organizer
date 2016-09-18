@@ -14,8 +14,6 @@ var livereload = require('gulp-livereload');
 var es = require('event-stream');
 var glob = require('glob');
 var mkdirp = require('mkdirp');
-var _ = require('lodash');
-var nodeResolve = require('resolve');
 
 //system libs
 var fs = require('fs');
