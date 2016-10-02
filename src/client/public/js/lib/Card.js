@@ -22,8 +22,8 @@ export default class Card extends React.Component {
                 </div>
                 
                 <div className="card-action">
-                	{this.props.actions.map(function(a){
-                		return a;
+                	{this.props.actions.map(function(a, i){
+                		return React.cloneElement(a,{key:i});
                 	})}                    
                 </div>
             </div>

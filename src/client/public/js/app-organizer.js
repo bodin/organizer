@@ -27,8 +27,7 @@ const body = (
 		    		<Card 
 		    			title="This is a test Card"
 		    			image="http://material-design.storage.googleapis.com/publish/v_2/material_ext_publish/0Bx4BSt6jniD7TDlCYzRROE84YWM/materialdesign_introduction.png"
-		    			actions={actions}
-		    		>
+		    			actions={actions}>
 		    			<p>This is a card and I am suppling text for it.</p>
 		    		</Card>
 		    	</div>
