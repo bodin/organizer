@@ -1,11 +1,15 @@
+@import "bootstrap";
+@import "components/card";
+
+
 /** Insert SCSS here */
 html {
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
+	font-family: 'Roboto', sans-serif;
+	-webkit-font-smoothing: antialiased;
 }
 
 
 body {
-  font-size: 15px;
-  line-height: 24px;
+	font-size: 15px;
+	line-height: 24px;
 }

@@ -6,7 +6,6 @@ var buffer = require('vinyl-buffer');
 var cleanCSS = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
-var uglify = require('gulp-uglify');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
@@ -37,16 +36,16 @@ gulp.task('js-app', function() {
 });
 
 gulp.task('sass', function() {
+	
+	var scss = {
+		style: 'expanded',
+	    includePaths: ['./node_modules/bootstrap-sass/assets/stylesheets']		  
+	};
+	
 	return gulp.src(sourcePublic + '/sass/*.scss')
-	.pipe(sass({ style: 'expanded' }))
+	.pipe(sass(scss))
 	.pipe(cleanCSS({compatibility: 'ie8'}))
 	.pipe(rename({ suffix: '.min' }))	
-	.pipe(gulp.dest(buildPublic + '/css'))
-	.pipe(livereload());
-});
-
-gulp.task('css', function() {
-	return gulp.src(sourcePublic + '/css/*.css')	
 	.pipe(gulp.dest(buildPublic + '/css'))
 	.pipe(livereload());
 });
@@ -55,11 +54,6 @@ gulp.task('html', function() {
 	return gulp.src(sourceTemplates + '/*.html')            
 	.pipe(gulp.dest(buildTemplates))
 	.pipe(livereload());
-});
-
-gulp.task('vendor', function() {
-	return gulp.src(sourcePublic + '/vendor/**/**')            
-	.pipe(gulp.dest(buildPublic + '/vendor'));
 });
 
 gulp.task('classes', function() {
@@ -76,12 +70,11 @@ gulp.task('watch', function() {
 	livereload.listen();
 	gulp.watch(sourceTemplates + '/*.html', ['html']);
 	gulp.watch(sourcePublic + '/sass/*.scss', ['sass']);
-	gulp.watch(sourcePublic + '/css/*.css', ['css']);  
 	bundleJs(true)
 	gulp.watch('./bin/**/*.class', ['classes-bin'])	//helper for eclipse
 });
 
-gulp.task('setup', ['js-app', 'html', 'sass', 'css', 'vendor']);
+gulp.task('setup', ['js-app', 'html', 'sass', 'vendor']);
 
 function bundleJs(watch) {
 	return bundleOne(watch);
@@ -101,7 +94,7 @@ function bundleIntoOne(files, destination, watch) {
 	gutil.log('Bundling');
 
 	var props = watchify.args;
-	props.debug = !production;
+	props.debug = true;
 	props.entries = files;
 	
 	var bundler = watch ? watchify(browserify(props)) : browserify(props);	
@@ -114,14 +107,17 @@ function bundleIntoOne(files, destination, watch) {
 		var startTime = new Date().getTime();		
 		return bundler
 		.bundle()
-		.pipe(source(destination))
-		//.pipe(buffer())
-		//.pipe(uglify())
-		.pipe(gulp.dest(buildPublic + '/js'))			
+		.on("error", function(err) {
+			gutil.log(err.toString());
+        })
 		.on('end', function (options) {
 			var time = (new Date().getTime() - startTime) / 1000;
 			gutil.log('Browserified in: ' + time + 's');
-		});		
+		})
+		.pipe(source(destination))
+		.pipe(gulp.dest(buildPublic + '/js'))
+		.pipe(livereload())
+		;		
 	}
 
 	//	this is for watchify
@@ -132,16 +128,5 @@ function bundleIntoOne(files, destination, watch) {
 
 	gutil.log('Done bundling');
 	return rebundle();
-}
-
-function getNPMPackageIds() {
-	// read package.json and get dependencies' package ids
-	var packageManifest = {};
-	try {
-		packageManifest = require('./package.json');
-	} catch (e) {
-		// does not have a package.json manifest
-	}
-	return _.keys(packageManifest.dependencies) || [];
 }
 
