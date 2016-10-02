@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Panel from 'react-bootstrap/lib/Panel';
 
-import Card from './components/Card';
+import Card from './lib/Card';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
