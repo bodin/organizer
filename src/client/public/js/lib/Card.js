@@ -6,26 +6,32 @@ export default class Card extends React.Component {
 	}
 
 	render(){
-				
+		var image;
+		if(this.props.image){
+			image = (<img className="img-responsive" src={this.props.image}></img>)
+		}
 		return (
 			<div className="card">
                 <div className="card-image">
-                    <img className="img-responsive" src="http://material-design.storage.googleapis.com/publish/v_2/material_ext_publish/0Bx4BSt6jniD7TDlCYzRROE84YWM/materialdesign_introduction.png"></img>
-                    <span className="card-title">Material Cards</span>
+                    {image}
+                    <span className="card-title">{this.props.title}</span>
                 </div>
                 
                 <div className="card-content">
-                    <p>Cards for display in portfolio style material design by Google.</p>
+                	{this.props.children}
                 </div>
                 
                 <div className="card-action">
-                    <a href="#" target="new_blank">Link</a>
-                    <a href="#" target="new_blank">Link</a>
-                    <a href="#" target="new_blank">Link</a>
-                    <a href="#" target="new_blank">Link</a>
-                    <a href="#" target="new_blank">Link</a>
+                	{this.props.actions.map(function(a){
+                		return a;
+                	})}                    
                 </div>
             </div>
 		)		
 	}
+}
+
+Card.defaultProps = {
+	title:"",
+	actions:[]
 }

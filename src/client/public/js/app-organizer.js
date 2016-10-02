@@ -11,6 +11,11 @@ injectTapEventPlugin();
 function handleClick() {
   alert('You have clicked on me');
 }
+var actions = [
+	<a href="#" target="new_blank">Link 1</a>,
+	<a href="#" target="new_blank">Link 2</a>,
+	<a href="#" target="new_blank">Link 3</a>	
+]
 const body = (
 	<div>
 		<Panel onClick={ handleClick }>
@@ -19,11 +24,17 @@ const body = (
 		<div className="container">			
 			<div className="row">	        
 		    	<div className="col-md-6 col-md-offset-3">
-		    		<Card/>
+		    		<Card 
+		    			title="This is a test Card"
+		    			image="http://material-design.storage.googleapis.com/publish/v_2/material_ext_publish/0Bx4BSt6jniD7TDlCYzRROE84YWM/materialdesign_introduction.png"
+		    			actions={actions}
+		    		>
+		    			<p>This is a card and I am suppling text for it.</p>
+		    		</Card>
 		    	</div>
 		    </div>
 		</div>		
 	</div>
 )
 
-ReactDOM.render(body, document.getElementById('react-two'));
+ReactDOM.render(body, document.getElementById('app'));
