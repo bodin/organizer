@@ -74,7 +74,7 @@ gulp.task('watch', function() {
 	gulp.watch('./bin/**/*.class', ['classes-bin'])	//helper for eclipse
 });
 
-gulp.task('setup', ['js-app', 'html', 'sass', 'vendor']);
+gulp.task('setup', ['js-app', 'html', 'sass']);
 
 function bundleJs(watch) {
 	return bundleOne(watch);
@@ -100,8 +100,6 @@ function bundleIntoOne(files, destination, watch) {
 	var bundler = watch ? watchify(browserify(props)) : browserify(props);	
 	
 	bundler.transform(babelify, {presets: ["es2015", "react"]})	
-	
-	bundler.external('material-ui');
 	
 	function rebundle() {
 		var startTime = new Date().getTime();		

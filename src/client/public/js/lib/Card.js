@@ -11,7 +11,7 @@ export default class Card extends React.Component {
 			image = (<img className="img-responsive" src={this.props.image}></img>)
 		}
 		return (
-			<div className="card">
+			<div className="card" onClick={this.props.onClick}>
                 <div className="card-image">
                     {image}
                     <span className="card-title">{this.props.title}</span>
@@ -33,5 +33,6 @@ export default class Card extends React.Component {
 
 Card.defaultProps = {
 	title:"",
-	actions:[]
+	actions:[],
+	//onClick:function(){}
 }
