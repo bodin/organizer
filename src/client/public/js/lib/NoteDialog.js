@@ -10,7 +10,9 @@ export default class NoteDialog extends React.Component {
 
 	render(){		
 		if(this.props.selectedNote == undefined){
-			return (<span/>)
+			return (
+					<Modal show={false} />
+			)
 		}else{
 			return (				
 				<Modal show={this.props.selectedNote != undefined} onHide={this.props.onHide}>
